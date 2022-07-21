@@ -1,0 +1,6 @@
+@import './helpers';
+
+.text {
+  @include generate-colors($attribute: "color");
+  @include generate-typography();
+}

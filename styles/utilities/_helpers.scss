@@ -1,0 +1,29 @@
+@import './_theme';
+
+// Generate classes for each color 
+// e.g. .text-purple-50, .text-purple-100
+@mixin generate-colors($attribute: "color") {
+  @each $name, $modifier in map-get($map: $theme, $key: colors) {
+    &-#{$name} {
+      @each $modifier, $value in $modifier {
+        &-#{$modifier} {
+          #{$attribute}: $value;
+        }
+      }
+    }
+  }
+}
+
+
+// Generate classes for typography
+// e.g. .text-sm, .text-lg
+@mixin generate-typography() {
+  @each $name, $modifier in map-get($map: $theme, $key: typography) {
+    &-#{$name} {
+      @each $property, $value in $modifier {
+        #{$property}: $value;
+      }
+    }
+  }
+}
+
