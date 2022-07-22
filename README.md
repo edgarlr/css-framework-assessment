@@ -1,34 +1,81 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# CSS Framework Assessment
 
-## Getting Started
+## File Structure
 
-First, run the development server:
+```scss
+pages
+  |─  _app.js
+  └─  index.js
 
-```bash
-npm run dev
-# or
-yarn dev
+styles
+  |- main.scss
+  |- tokens.scss // Tokens as CSS variables.
+  |- base.scss
+  |
+  |- utilities
+  |   |- _helpers.scss // Mixins for classes generation
+  |   |- _theme.scss // Theme used on classes generation
+  |   └─ typography.scss // Typography utility classes
+  |
+  |- components
+        └─ header.scss
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## CSS Variables
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+I decided to use CSS variables as tokens instead of SASS variables to keep all the advantages of the CSS custom properties. This helps to separate the token values from our theme so we can reuse any colors into borders, or reuse spacing tokens into margins and paddings, etc.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+It also could make easy to add a dark theme by simply re-assigning our CSS custom properties without needing to update any part of the markup or theme. e.g.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```css
+[data-theme="dark"] {
+  --purple-50: #4c1d95; // --purple-900 hex in light theme
+  --purple-100: #5b21b6; // --purple-800 hex in light theme
+  //...
+}
+```
 
-## Learn More
+Similar to the dark theme, it allows us to update any text or spacing custom property in smaller devices. e.g.
 
-To learn more about Next.js, take a look at the following resources:
+```css
+@media screen and (max-width: 425px) {
+  --fontsize-sm: 15px; // 13px in bigger devices
+  --fontsize-md: 17px; // 15px in bigger devices
+  //...
+}
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Exensibility
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Adding more text styles
 
-## Deploy on Vercel
+After adding the new tokens for each text size, to auto generate all the new text utility classes it only requires to add each token under `$theme.typography`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```scss
+typography: (
+  // ...
+  xs: (font-size: var(--fontsize-xl), line-height: var(--lineheight-xl))
+);
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Adding more colors
+
+After adding all new tokens, to auto generate all new utility classes for texts colors or any other utility classes using `generate-colors()`. It only requires to update the `$theme.colors`
+
+```scss
+colors: (
+  // ...
+  green: (50: var(--green-50), 100: var(--green-100), // ...)
+);
+```
+
+### Adding more utility classes
+
+To create a new utility class for background color we can reuse the `generate-colors()` and will create all new background color utility classes using the color pallet defined under `_theme.scss`.
+
+```scss
+.bg {
+  @include generate-colors($attribute: "background-color");
+}
+```
