@@ -30,8 +30,8 @@ It also could make easy to add a dark theme by simply re-assigning our CSS custo
 
 ```css
 [data-theme="dark"] {
-  --purple-50: #4c1d95; // --purple-900 hex in light theme
-  --purple-100: #5b21b6; // --purple-800 hex in light theme
+  --purple-50: #4c1d95; // var(--purple-900) hex in light theme
+  --purple-100: #5b21b6; // var(--purple-800) hex in light theme
   //...
 }
 ```
@@ -55,7 +55,10 @@ After adding the new tokens for each text size, to auto generate all the new tex
 ```scss
 typography: (
   // ...
-  xs: (font-size: var(--fontsize-xl), line-height: var(--lineheight-xl))
+  xs: (
+    font-size: var(--fontsize-xl), 
+    line-height: var(--lineheight-xl)
+  )
 );
 ```
 
@@ -66,7 +69,11 @@ After adding all new tokens, to auto generate all new utility classes for texts 
 ```scss
 colors: (
   // ...
-  green: (50: var(--green-50), 100: var(--green-100), // ...)
+  green: (
+    50: var(--green-50), 
+    100: var(--green-100), 
+    // ...
+  )
 );
 ```
 
